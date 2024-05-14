@@ -60,6 +60,7 @@ function createData() {
     imgUrl.value != "" 
   ) {
     database.ref("placeData").push(data);
+    alert("Berhasil memasukkan data")
 
     placeName.value = "";
     description.value = "";

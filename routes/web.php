@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\AuthController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,11 +15,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+    if (!session()->has('token')){
+        return redirect()->route('login');
+    }
+
     return view('home',[
         "title" => "Home",
-        "name" => "Nanda Arya"
+        "name" => ""
     ]);
-});
+})->name('home');
 
 Route::get('/laravel', function () {
     return view('welcome');
@@ -45,17 +50,27 @@ Route::get('/data', function () {
     ]);
 });
 
-Route::get('/login', function () {
-    return view('login', [
-        "title" => "Login",
-        "name" => "Nanda Arya",
-    ]);
-});
+// Route::get('/login', function () {
+//     return view('login', [
+//         "title" => "Login",
+//         "name" => "Nanda Arya",
+//     ]);
+// });
 
 
-Route::get('/register', function () {
-    return view('register', [
-        "title" => "Register",
-    ]);
-});
+// Route::get('/register', function () {
+//     return view('register', [
+//         "title" => "Register",
+//     ]);
+// });
+
+Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
+
+Route::post('login', [AuthController::class, 'login']);
+
+Route::get('register', [AuthController::class, 'showRegisterForm'])->name('register');
+
+Route::post('register', [AuthController::class, 'register']);
+
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
